@@ -1,4 +1,5 @@
-﻿module FractalXam.Core.Fractal
+﻿[<RequireQualifiedAccess>]
+module FractalXam.Core.Fractal
 
 [<Struct>]
 type private vec2 =
@@ -14,5 +15,11 @@ type Line =
 
     private new : vec2 * vec2 -> Line
 
+type Config =
+    {
+        Degrees: float32
+        Length: float32
+    }
+
 [<CompiledName("Create")>]
-val create : length: float32 -> Line []
+val create : config: Config -> Line []

@@ -19,6 +19,9 @@ namespace FractalXamDroid
     {
         const float DefaultProgress = 0.4f;
 
+        LinearLayout m_linearLayout;
+        FractalView m_fractalView;
+
         void AddSeekBar(LinearLayout linearLayout, FractalView fractalView)
         {
             var seekBarLayout = new LinearLayout(this);
@@ -39,16 +42,35 @@ namespace FractalXamDroid
         {
             base.OnCreate(bundle);
 
-            var linearLayout = new LinearLayout(this);
-            linearLayout.Orientation = Orientation.Vertical;
-            linearLayout.SetGravity(GravityFlags.CenterHorizontal);
+            m_linearLayout = new LinearLayout(this);
+            m_linearLayout.Orientation = Orientation.Vertical;
+            m_linearLayout.SetGravity(GravityFlags.CenterHorizontal);
 
-            var fractalView = new FractalView(this);
-            linearLayout.AddView(fractalView, new ViewGroup.LayoutParams(1024, 1024));
+            m_fractalView = new FractalView(this);
+            m_linearLayout.AddView(m_fractalView);
 
-            AddSeekBar(linearLayout, fractalView);
+            AddSeekBar(m_linearLayout, m_fractalView);
 
-            SetContentView(linearLayout);
+            SetContentView(m_linearLayout);
+
+            m_linearLayout.LayoutChange += (sender, e) =>
+            {
+                var parent = (View)m_fractalView.Parent;
+                var size = 0;
+
+                if (Resources.Configuration.Orientation == Android.Content.Res.Orientation.Portrait)
+                {
+                    m_linearLayout.Orientation = Orientation.Vertical;
+                    size = parent.Width;
+                }
+                else
+                {
+                    m_linearLayout.Orientation = Orientation.Horizontal;
+                    size = parent.Height;
+                }
+
+                m_fractalView.LayoutParameters = new LinearLayout.LayoutParams(size, size);
+            };
         }
     }
 }

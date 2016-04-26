@@ -29,7 +29,7 @@ namespace FractalXamDroid
 
         public void SetFractalLength(float length)
         {
-            m_renderer.Lines = Fractal.Create(length);
+            m_renderer.Lines = Fractal.Create(new Fractal.Config(20f, length));
         }
     }
 }

@@ -47,7 +47,7 @@ void main()
 
         public FractalRenderer()
         {
-            Lines = Fractal.Create(0f);
+            Lines = new Fractal.Line[0];
         }
 
         public void OnDrawFrame(IGL10 gl)
