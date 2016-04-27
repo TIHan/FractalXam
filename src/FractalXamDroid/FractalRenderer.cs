@@ -16,7 +16,7 @@ namespace FractalXamDroid
 {
     public class FractalRenderer : Java.Lang.Object, GLSurfaceView.IRenderer
     {
-        readonly string m_lineVertex = @"
+        const string LineVertex = @"
 #version 310 es
 
 in vec2 in_position;
@@ -27,7 +27,7 @@ void main ()
 }
 ";
 
-        readonly string m_lineFragment = @"
+        const string LineFragment = @"
 #version 310 es
 
 precision highp float;
@@ -84,7 +84,7 @@ void main()
         void LoadShaders()
         {
             var vertexShaderId = GL.CreateShader(ShaderType.VertexShader);
-            GL.ShaderSource(vertexShaderId, m_lineVertex);
+            GL.ShaderSource(vertexShaderId, LineVertex);
             GL.CompileShader(vertexShaderId);
 
             var vertexErr = 0;
@@ -96,7 +96,7 @@ void main()
             }
 
             var fragmentShaderId = GL.CreateShader(ShaderType.FragmentShader);
-            GL.ShaderSource(fragmentShaderId, m_lineFragment);
+            GL.ShaderSource(fragmentShaderId, LineFragment);
             GL.CompileShader(fragmentShaderId);
 
             var fragmentErr = 0;
