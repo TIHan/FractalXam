@@ -141,6 +141,14 @@ namespace FractalXamDroid
             outState.PutInt("Degrees", m_stateDegrees);
             base.OnSaveInstanceState(outState);
         }
+
+        protected override void OnRestoreInstanceState(Bundle savedInstanceState)
+        {
+            base.OnRestoreInstanceState(savedInstanceState);
+            m_stateLength = savedInstanceState.GetInt("Length");
+            m_stateFirstLength = savedInstanceState.GetInt("FirstLength");
+            m_stateDegrees = savedInstanceState.GetInt("Degrees");
+        }
     }
 }
 
