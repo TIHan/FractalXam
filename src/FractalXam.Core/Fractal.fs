@@ -19,6 +19,7 @@ type Config =
     {
         Degrees: float32
         Length: float32
+        FirstLength: float32
     }
 
 [<Literal>]
@@ -50,7 +51,7 @@ let makeLines config (line: Line) =
 [<CompiledName("Create")>]
 let create config =
     let beginPoint = vec2 (0.f, -1.f)
-    let endPoint = vec2 (0.f, -1.f * (1.f - config.Length))
+    let endPoint = vec2 (0.f, -1.f * (1.f - config.FirstLength))
     let drawLine = Line (beginPoint, endPoint)
     makeLines config drawLine
     |> Array.ofList

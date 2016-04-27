@@ -17,60 +17,129 @@ namespace FractalXamDroid
     [Activity(Label = "FractalXamDroid", MainLauncher = true, Icon = "@drawable/icon")]
     public class MainActivity : Activity
     {
-        const float DefaultProgress = 0.4f;
-
-        LinearLayout m_linearLayout;
+        LinearLayout m_mainLinearLayout;
+        LinearLayout m_controlsLinearLayout;
         FractalView m_fractalView;
 
-        void AddSeekBar(LinearLayout linearLayout, FractalView fractalView)
-        {
-            var seekBarLayout = new LinearLayout(this);
-            var seekBar = new SeekBar(this);
-            seekBarLayout.AddView(seekBar, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.MatchParent));
-            linearLayout.AddView(seekBarLayout);
+        int m_stateLength = 0;
+        int m_stateFirstLength = 0;
+        int m_stateDegrees = 0;
 
-            seekBar.Max = 1000;
-            seekBar.Progress = (int)(DefaultProgress * 1000f);
-            fractalView.SetFractalLength(DefaultProgress);
-            seekBar.ProgressChanged += (sender, e) =>
-            {
-                fractalView.SetFractalLength(e.Progress * 0.001f);
-            };
+        void AddSeekBar(string labelText, Action<SeekBar> f)
+        {
+            var layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.WrapContent);
+            layoutParams.SetMargins(16, 16, 16, 16);
+
+            var linearLayout = new LinearLayout(this);
+            linearLayout.Orientation = Orientation.Horizontal;
+            linearLayout.LayoutParameters = layoutParams;
+
+            var label = new TextView(this);
+            label.Text = labelText;
+            label.SetMinimumWidth(256);
+
+            var seekBar = new SeekBar(this);
+            f(seekBar);
+
+            linearLayout.AddView(label);
+            linearLayout.AddView(seekBar, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.WrapContent));
+
+            m_controlsLinearLayout.AddView(linearLayout);
         }
 
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
 
-            m_linearLayout = new LinearLayout(this);
-            m_linearLayout.Orientation = Orientation.Vertical;
-            m_linearLayout.SetGravity(GravityFlags.CenterHorizontal);
+            if (bundle != null)
+            {
+                m_stateLength = bundle.GetInt("Length");
+                m_stateFirstLength = bundle.GetInt("FirstLength");
+                m_stateDegrees = bundle.GetInt("Degrees");
+            }
+            else
+            {
+                m_stateLength = (int)(0.4f * 1000f);
+                m_stateFirstLength = m_stateLength;
+                m_stateDegrees = 20;
+            }
+
+
+            m_mainLinearLayout = new LinearLayout(this);
+            m_mainLinearLayout.Orientation = Orientation.Vertical;
+            m_mainLinearLayout.SetGravity(GravityFlags.CenterHorizontal);
+
+            m_controlsLinearLayout = new LinearLayout(this);
+            m_controlsLinearLayout.Orientation = Orientation.Vertical;
 
             m_fractalView = new FractalView(this);
-            m_linearLayout.AddView(m_fractalView);
+            m_mainLinearLayout.AddView(m_fractalView);
+            m_mainLinearLayout.AddView(m_controlsLinearLayout);
 
-            AddSeekBar(m_linearLayout, m_fractalView);
+            AddSeekBar("Length", seekBar =>
+            {
+                seekBar.Max = 1000;
+                seekBar.Progress = m_stateLength;
+                m_fractalView.SetFractalLength(m_stateLength * 0.001f);
+                seekBar.ProgressChanged += (sender, e) =>
+                {
+                    m_stateLength = e.Progress;
+                    m_fractalView.SetFractalLength(m_stateLength * 0.001f);
+                };
+            });
 
-            SetContentView(m_linearLayout);
+            AddSeekBar("First Length", seekBar =>
+            {
+                seekBar.Max = 1000;
+                seekBar.Progress = m_stateFirstLength;
+                m_fractalView.SetFractalFirstLength(m_stateFirstLength * 0.001f);
+                seekBar.ProgressChanged += (sender, e) =>
+                {
+                    m_stateFirstLength = e.Progress;
+                    m_fractalView.SetFractalFirstLength(m_stateFirstLength * 0.001f);
+                };
+            });
 
-            m_linearLayout.LayoutChange += (sender, e) =>
+            AddSeekBar("Degrees", seekBar =>
+            {
+                seekBar.Max = 360;
+                seekBar.Progress = m_stateDegrees;
+                m_fractalView.SetFractalDegrees(m_stateDegrees);
+                seekBar.ProgressChanged += (sender, e) =>
+                {
+                    m_stateDegrees = e.Progress;
+                    m_fractalView.SetFractalDegrees(m_stateDegrees);
+                };
+            });
+
+            SetContentView(m_mainLinearLayout);
+
+            m_mainLinearLayout.LayoutChange += (sender, e) =>
             {
                 var parent = (View)m_fractalView.Parent;
                 var size = 0;
 
                 if (Resources.Configuration.Orientation == Android.Content.Res.Orientation.Portrait)
                 {
-                    m_linearLayout.Orientation = Orientation.Vertical;
-                    size = parent.Width;
+                    m_mainLinearLayout.Orientation = Orientation.Vertical;
+                    size = parent.Height / 2;
                 }
                 else
                 {
-                    m_linearLayout.Orientation = Orientation.Horizontal;
-                    size = parent.Height;
+                    m_mainLinearLayout.Orientation = Orientation.Horizontal;
+                    size = parent.Width / 2;
                 }
 
                 m_fractalView.LayoutParameters = new LinearLayout.LayoutParams(size, size);
             };
+        }
+
+        protected override void OnSaveInstanceState(Bundle outState)
+        {
+            outState.PutInt("Length", m_stateLength);
+            outState.PutInt("FirstLength", m_stateFirstLength);
+            outState.PutInt("Degrees", m_stateDegrees);
+            base.OnSaveInstanceState(outState);
         }
     }
 }

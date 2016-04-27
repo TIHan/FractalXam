@@ -19,6 +19,7 @@ type Config =
     {
         Degrees: float32
         Length: float32
+        FirstLength: float32
     }
 
 [<CompiledName("Create")>]
