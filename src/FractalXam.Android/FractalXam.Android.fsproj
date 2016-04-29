@@ -72,7 +72,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\src\FractalXam.Core\FractalXam.Core.fsproj">
+    <ProjectReference Include="..\FractalXam.Core\FractalXam.Core.fsproj">
       <Name>FractalXam.Core</Name>
       <Project>{bc8b1a40-ed9c-4d33-9e4f-b587a6523b17}</Project>
       <Private>True</Private>

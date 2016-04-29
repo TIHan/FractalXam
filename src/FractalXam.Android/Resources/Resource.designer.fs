@@ -23,10 +23,10 @@ namespace FractalXam.Android
     #nowarn "51" // address-of operator can occur in the code
     #nowarn "1183" // unused 'this' reference
     
-    exception ReturnException2b814a0c6d5942179967a38fd4be895c of obj
-    exception ReturnNoneException2b814a0c6d5942179967a38fd4be895c
+    exception ReturnExceptionfd6972a9ca514b899a1949a7c0d675a2 of obj
+    exception ReturnNoneExceptionfd6972a9ca514b899a1949a7c0d675a2
     [<AutoOpen>]
-    module FuncConvertFinalOverload2b814a0c6d5942179967a38fd4be895c =
+    module FuncConvertFinalOverloadfd6972a9ca514b899a1949a7c0d675a2 =
       // This extension member adds to the FuncConvert type and is the last resort member in the method overloading rules. 
       type global.Microsoft.FSharp.Core.FuncConvert with
           /// A utility function to convert function values from tupled to curried form
