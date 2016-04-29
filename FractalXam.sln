@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FractalXamDroid", "src\Frac
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "FractalXam.Core", "src\FractalXam.Core\FractalXam.Core.fsproj", "{BC8B1A40-ED9C-4D33-9E4F-B587A6523B17}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "FractalXam.Android", "FractalXam.Android\FractalXam.Android.fsproj", "{743B2D27-65DF-4D3C-BB2C-6C5B7C015031}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "FractalXam.Android", "src\FractalXam.Android\FractalXam.Android.fsproj", "{743B2D27-65DF-4D3C-BB2C-6C5B7C015031}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
